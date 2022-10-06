@@ -3,17 +3,11 @@ import './insight.css';
 import { useHistory } from "react-router-dom";
 import { useState,useEffect } from "react";
 import Sidebar from "../sidebar/sidebar";
-import Table from '@mui/material/Table';
-import { Box, Button } from "@mui/material";
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
+import { Table, Box, Button,TableRow,TableBody,TableCell,TableHead,TableContainer }from '@mui/material';
 import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const Insights=()=>{
@@ -30,14 +24,12 @@ const Insights=()=>{
     useEffect(()=>getInsight(),[]);
 
     const editInsights=(id)=>{
-        console.log('edit',id);
+        history.push(`/editinsights/${id}`);
     }
     const updateInsights=()=>{
-        console.log('update');
         history.push('/addinsight')
     }
     const deleteInsights=(id)=>{
-        console.log('delete',id);
         axios.delete('http://localhost:3001/deleteinsights',{params:{id:id}}).then((res)=>{
             console.log(res.data.message);
             toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
