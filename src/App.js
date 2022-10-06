@@ -1,4 +1,5 @@
-import { createTheme,ThemeProvider } from '@mui/material/styles';  
+import { createTheme,ThemeProvider } from '@mui/material/styles'; 
+import { ToastContainer } from 'react-toastify'; 
 import MainPage from './pages/main';
 function App() {
 
@@ -15,6 +16,7 @@ const theme = createTheme({
   return (
     <ThemeProvider theme ={theme}>
     <div>
+      <ToastContainer/>
       <MainPage/>
     </div>
     </ThemeProvider>

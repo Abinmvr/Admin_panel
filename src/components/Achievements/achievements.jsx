@@ -1,18 +1,20 @@
-import axios from "axios";
 import './achieve.css';
-import { useHistory } from "react-router-dom";
-import { useState,useEffect } from "react";
-import Sidebar from "../sidebar/sidebar";
+import axios from "axios";
+import {toast } from 'react-toastify';
 import Table from '@mui/material/Table';
+import Paper from '@mui/material/Paper';
+import Sidebar from "../sidebar/sidebar";
+import { useState,useEffect } from "react";
 import { Box, Button } from "@mui/material";
+import { useHistory } from "react-router-dom";
+import TableRow from '@mui/material/TableRow';
+import 'react-toastify/dist/ReactToastify.css';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import TableContainer from '@mui/material/TableContainer';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
 const Achievement=()=>{
     const history =useHistory();
@@ -21,20 +23,24 @@ const Achievement=()=>{
         axios.get('http://localhost:3001/achieve').then((res)=>{
             setAchieve(res.data.message);
         }).catch=(e)=>{
-            console.log(e);
+            console.log('err',e);
         }
     }
     useEffect(()=>getAchieve(),[]);
     
     const editAchieves=(id)=>{
-        console.log('edit',id);
+        history.push(`/edit/${id}`);
     }
-    const updateAchieves=(id)=>{
-        console.log('update',id);
-        history.push('/add');
+    const updateAchieves=()=>{
+        history.push(`/addachieve`);
     }
-    const deleteAchieves=(id)=>{
-        console.log('delete',id);
+    const deleteAchieves=(id)=>{ 
+        axios.delete(`http://localhost:3001/deleteachieve`,{params:{id:id}}).then((res)=>{
+            toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
+            getAchieve();
+        }).catch=(e)=>{
+             console.log(e);
+        }
     }
    
     return(
@@ -43,8 +49,7 @@ const Achievement=()=>{
         flexDirection={"column"}
         marginLeft={260} 
         alignItems={'center'} 
-        margin={'auto'}
-        >  
+        margin={'auto'}>  
             <Sidebar/>
             <TableContainer component={Paper}>
                 <Table sx={{ marginLeft:'240px',maxWidth:'600px' }} aria-label="simple table">
@@ -66,13 +71,14 @@ const Achievement=()=>{
                                     </div>
                                 </TableCell> 
                                 <TableCell align="right"><Button onClick={(e)=>editAchieves(row.id)} sx={{color:'blue'}}><EditTwoToneIcon/></Button></TableCell>
-                                <TableCell align="right"><Button onClick={(e)=>updateAchieves(row.id)} sx={{color:'green'}}><AddCircleOutlineTwoToneIcon/></Button></TableCell>
                                 <TableCell align="right"><Button onClick={(e)=>deleteAchieves(row.id)} sx={{color:'red'}}><DeleteTwoToneIcon/></Button></TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
                 </Table>
-            </TableContainer>  
+            </TableContainer> 
+            <Button onClick={updateAchieves} sx={{color:'green'}}>Add<AddCircleOutlineTwoToneIcon/></Button>
+                                
         </Box>
     </div>
     );

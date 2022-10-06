@@ -1,18 +1,18 @@
+import Sidebar from "../sidebar/sidebar";
 import axios from "axios";
 import {useState } from "react";
-import {toast } from 'react-toastify';
-import Sidebar from "../sidebar/sidebar";
-import { useHistory } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
 import { Box ,Button, TextField} from "@mui/material";
-const AddAchieve=()=>{
+import {toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useHistory } from "react-router-dom";
+const AddInsights=()=>{
     const history=useHistory();
     const[title,setTitle]=useState('');
     const[details,setDetails]=useState('');
     const[imageLink,setImage]=useState('');
-    const addAchieveFunction=()=>{
+    const addInsightsFunction=()=>{
         if((title!=='')&&(details!=='')&&(imageLink!=='')){
-            axios.post('http://localhost:3001/addachieve',{
+            axios.post('http://localhost:3001/addInsights',{
                 title:title,
                 details:details,
                 image:imageLink 
@@ -20,10 +20,10 @@ const AddAchieve=()=>{
                 const status = res.data.success;
                 if(status===true){
                         toast.success('Add successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
-                        history.push('/achievements');
+                        history.push('/Insight');
                 }
             }).catch=(e)=>{
-                 console.log(e);
+                    console.log(e);
             }
         }
     }
@@ -39,9 +39,9 @@ const AddAchieve=()=>{
                 <TextField margin="normal" type={'text'} variant={'outlined'} placeholder={'title'} onChange={(e)=>setTitle(e.target.value)} ></TextField>
                 <TextField margin="normal" type={'text'} variant={'outlined'} placeholder={'Description'} onChange={(e)=>setDetails(e.target.value)} ></TextField>
                 <TextField margin="normal" type={'text'} variant={'outlined'} placeholder={'Image Link'} onChange={(e)=>setImage(e.target.value)}></TextField>
-                <Button  sx={{marginTop:2 }}variant="contained" color="success" onClick={addAchieveFunction}>Add</Button> 
+                <Button  sx={{marginTop:2 }}variant="contained" color="success" onClick={addInsightsFunction}>Add</Button> 
             </Box>
         </div>
     );
 }
-export default AddAchieve;
+export default AddInsights;

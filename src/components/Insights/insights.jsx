@@ -1,5 +1,6 @@
 import axios from "axios";
 import './insight.css';
+import { useHistory } from "react-router-dom";
 import { useState,useEffect } from "react";
 import Sidebar from "../sidebar/sidebar";
 import Table from '@mui/material/Table';
@@ -13,7 +14,10 @@ import Paper from '@mui/material/Paper';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
+import {toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Insights=()=>{
+    const history =useHistory();
     const [insight,setInsight]=useState([])
     const getInsight=()=>{
         axios.get('http://localhost:3001/insight').then(res=>{
@@ -28,11 +32,19 @@ const Insights=()=>{
     const editInsights=(id)=>{
         console.log('edit',id);
     }
-    const updateInsights=(id)=>{
-        console.log('update',id);
+    const updateInsights=()=>{
+        console.log('update');
+        history.push('/addinsight')
     }
     const deleteInsights=(id)=>{
         console.log('delete',id);
+        axios.delete('http://localhost:3001/deleteinsights',{params:{id:id}}).then((res)=>{
+            console.log(res.data.message);
+            toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
+            getInsight();
+        }).catch=(e)=>{
+        console.log(e);
+    }
     }
     return(
         <div>   
@@ -62,13 +74,13 @@ const Insights=()=>{
                                         </div>
                                     </TableCell> 
                                     <TableCell align="right" ><Button onClick={(e)=>editInsights(row.id)} sx={{color:'blue',padding:0}}><EditRoundedIcon/></Button></TableCell>
-                                    <TableCell align="right" ><Button onClick={(e)=>updateInsights(row.id)} sx={{color:'green'}}><AddCircleOutlineTwoToneIcon/></Button></TableCell>
                                     <TableCell align="right" ><Button onClick={(e)=>deleteInsights(row.id)} sx={{color:'red'}}><DeleteTwoToneIcon/></Button></TableCell>
                             </TableRow>
                         ))}
                         </TableBody>
                     </Table>
-                </TableContainer>  
+                </TableContainer>      
+            <Button onClick={updateInsights} sx={{color:'green'}}>Add<AddCircleOutlineTwoToneIcon/></Button>
             </Box>
         </div>
     )
