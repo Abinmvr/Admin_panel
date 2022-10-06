@@ -1,21 +1,16 @@
 import './achieve.css';
 import axios from "axios";
 import {toast } from 'react-toastify';
-import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
 import Sidebar from "../sidebar/sidebar";
 import { useState,useEffect } from "react";
-import { Box, Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
-import TableRow from '@mui/material/TableRow';
+import { Table, Box, Button,TableRow,TableBody,TableCell,TableHead,TableContainer }from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableContainer from '@mui/material/TableContainer';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
+
 const Achievement=()=>{
     const history =useHistory();
     const [achieve,setAchieve]=useState([])
@@ -29,13 +24,13 @@ const Achievement=()=>{
     useEffect(()=>getAchieve(),[]);
     
     const editAchieves=(id)=>{
-        history.push(`/edit/${id}`);
+        history.push(`/editachieve/${id}`);
     }
     const updateAchieves=()=>{
         history.push(`/addachieve`);
     }
     const deleteAchieves=(id)=>{ 
-        axios.delete(`http://localhost:3001/deleteachieve`,{params:{id:id}}).then((res)=>{
+        axios.delete('http://localhost:3001/deleteachieve',{params:{id:id}}).then((res)=>{
             toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
             getAchieve();
         }).catch=(e)=>{

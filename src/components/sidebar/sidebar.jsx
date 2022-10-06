@@ -102,13 +102,11 @@ export default function Sidebar() {
   const ListItems=[
     {text:'Insights',
     onClick:()=>{
-      console.log('insights clicked');
       history.push('/insight');
     }
   },
   {text:'Achievements',
   onClick:()=>{
-    console.log('Achievements clicked');
     history.push('/achievements');
   }
 }
