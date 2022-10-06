@@ -4,6 +4,8 @@ import Achievement from "../components/Achievements/achievements";
 import Login from "./Login";
 import Home from "./home";
 import AddAchieve from "../components/Achievements/addAchieves";
+import EditAchieve from "../components/Achievements/editAchieves";
+import AddInsights from "../components/Insights/addInsights";
 function MainPage(){
     return(
         <BrowserRouter>
@@ -11,8 +13,11 @@ function MainPage(){
                 <Switch>  
                     <Route path='/home'><Home/></Route>
                     <Route  path='/achievements'><Achievement/> </Route>
-                    <Route path='/add'><AddAchieve/></Route>
+                    <Route path='/edit/:id'><EditAchieve/></Route>
+                    <Route exact path ='/addachieve'><AddAchieve/></Route>
                     <Route  path='/insight'><Insights/></Route>
+                    <Route  path='/addinsight'><AddInsights/></Route>
+
                     <Route exact path ='/'><Login/></Route>                  
                     <Route path='*'><h4>404 error - Page not found</h4></Route>
                 </Switch>
