@@ -46,6 +46,7 @@ const Insights=()=>{
             alignItems={'center'} 
             margin={'auto'}>  
                 <Sidebar/>
+                <Button onClick={updateInsights} sx={{color:'green'}}>Add<AddCircleOutlineTwoToneIcon/></Button>
                 <TableContainer component={Paper}>
                     <Table sx={{ marginLeft:'240px',maxWidth:'650px' }} aria-label="simple table">
                         <TableHead>
@@ -72,7 +73,6 @@ const Insights=()=>{
                         </TableBody>
                     </Table>
                 </TableContainer>      
-            <Button onClick={updateInsights} sx={{color:'green'}}>Add<AddCircleOutlineTwoToneIcon/></Button>
             </Box>
         </div>
     )
