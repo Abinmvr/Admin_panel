@@ -18,8 +18,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import InsightsIcon from '@mui/icons-material/Insights';
+import WorkIcon from '@mui/icons-material/Work';
 import { useHistory } from 'react-router-dom';
-
+import BadgeIcon from '@mui/icons-material/Badge';
 
 const drawerWidth = 240;
 
@@ -101,14 +102,28 @@ export default function Sidebar() {
   };
   const ListItems=[
     {text:'Insights',
+    icon:<InsightsIcon/>,
     onClick:()=>{
       history.push('/insight');
     }
   },
   {text:'Achievements',
+  icon: <EmojiEventsIcon />,
   onClick:()=>{
     history.push('/achievements');
   }
+},
+{text:'Jobs',
+icon: <WorkIcon />,
+onClick:()=>{
+  history.push('/job');
+}
+},
+{text:'Applicant',
+icon: <BadgeIcon />,
+onClick:()=>{
+  history.push('/applicant');
+}
 }
 ]
 
@@ -144,7 +159,6 @@ export default function Sidebar() {
         <List>
           {ListItems.map((item, index) => (
             <ListItem key={item.text} onClick={item.onClick} disablePadding sx={{ display: 'block' }}>
-              {/* <ListItemButton onClick = {text==='Insights' ? displayInsights : displayAchieve} */}
               <ListItemButton 
                 sx={{
                   minHeight: 48,
@@ -159,7 +173,8 @@ export default function Sidebar() {
                     justifyContent: 'center',
                   }}
                 >
-                  {index % 2 === 0 ? <InsightsIcon /> : <EmojiEventsIcon />}
+                  {/* {index % 2 === 0 ? <InsightsIcon /> : <EmojiEventsIcon />} */}
+                  {item.icon} 
                 </ListItemIcon>
                 <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>

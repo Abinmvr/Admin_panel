@@ -46,6 +46,7 @@ const Achievement=()=>{
         alignItems={'center'} 
         margin={'auto'}>  
             <Sidebar/>
+            <Button className='addbtn' onClick={updateAchieves} sx={{color:'green'}}>Add<AddCircleOutlineTwoToneIcon/></Button>
             <TableContainer component={Paper}>
                 <Table sx={{ marginLeft:'240px',maxWidth:'600px' }} aria-label="simple table">
                     <TableHead>
@@ -72,7 +73,6 @@ const Achievement=()=>{
                     </TableBody>
                 </Table>
             </TableContainer> 
-            <Button onClick={updateAchieves} sx={{color:'green'}}>Add<AddCircleOutlineTwoToneIcon/></Button>
                                 
         </Box>
     </div>
