@@ -10,11 +10,24 @@ import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwo
 import { Table, Box, Button,TableRow,TableBody,TableCell,TableHead,TableContainer }from '@mui/material';
 import {toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as React from 'react';
+import TablePagination from '@mui/material/TablePagination';
 const Insights=()=>{
     const history =useHistory();
-    const [insight,setInsight]=useState([])
+    const [insight,setInsight]=useState([]);  
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
     const getInsight=()=>{
-        axios.get('http://localhost:3001/insight').then(res=>{
+        axios.get(`${process.env.REACT_APP_ADMIN_PANEL_URL}insight`).then(res=>{
             setInsight(res.data.message);
          }).catch=(e)=>{
             console.log(e);
@@ -30,7 +43,7 @@ const Insights=()=>{
         history.push('/addinsight')
     }
     const deleteInsights=(id)=>{
-        axios.delete('http://localhost:3001/deleteinsights',{params:{id:id}}).then((res)=>{
+        axios.delete(`${process.env.REACT_APP_ADMIN_PANEL_URL}deleteinsights`,{params:{id:id}}).then((res)=>{
             console.log(res.data.message);
             toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
             getInsight();
@@ -38,6 +51,7 @@ const Insights=()=>{
         console.log(e);
     }
     }
+    const heading = ['Title','Details','Image','Actions'];
     return(
         <div>   
             <Box display={'flex'}
@@ -48,15 +62,14 @@ const Insights=()=>{
                 <Sidebar/>
                 <Button onClick={updateInsights} sx={{color:'green'}}>Add<AddCircleOutlineTwoToneIcon/></Button>
                 <TableContainer component={Paper}>
-                    <Table sx={{ marginLeft:'240px',maxWidth:'650px' }} aria-label="simple table">
+                    <Table sx={{ marginLeft:'240px',maxWidth:'800px' }} aria-label="simple table">
                         <TableHead>
-                            <TableRow>
-                                <TableCell>Title </TableCell>
-                                <TableCell align="left">Details</TableCell>
-                                <TableCell align="left">Image</TableCell>
+                            <TableRow >{heading.map((head,key)=>(
+                                <TableCell sx={{fontWeight:'bold',width:'200px'}} align="left" key={key}>{head}</TableCell>
+                            ))}
                             </TableRow>
                         </TableHead>
-                        <TableBody>{insight.map((row,index) => (
+                        <TableBody>{insight.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
                             <TableRow key={index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell align="left">{row.title}</TableCell>
@@ -66,13 +79,24 @@ const Insights=()=>{
                                             <img src={row.image} alt={''} ></img>
                                         </div>
                                     </TableCell> 
-                                    <TableCell align="right" ><Button onClick={(e)=>editInsights(row.id)} sx={{color:'blue',padding:0}}><EditRoundedIcon/></Button></TableCell>
-                                    <TableCell align="right" ><Button onClick={(e)=>deleteInsights(row.id)} sx={{color:'red'}}><DeleteTwoToneIcon/></Button></TableCell>
+                                    <TableCell sx={{width:'200px'}}>
+                                        <Button onClick={(e)=>editInsights(row.id)} sx={{color:'blue',padding:0}}><EditRoundedIcon/>
+                                        </Button><Button onClick={(e)=>deleteInsights(row.id)} sx={{color:'red'}}><DeleteTwoToneIcon/></Button>
+                                    </TableCell>
                             </TableRow>
                         ))}
                         </TableBody>
                     </Table>
-                </TableContainer>      
+                </TableContainer>  
+            <TablePagination
+                rowsPerPageOptions={[3, 5, 10]}
+                component="div"
+                count={insight.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            /> 
             </Box>
         </div>
     )

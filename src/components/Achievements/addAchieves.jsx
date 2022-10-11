@@ -12,7 +12,7 @@ const AddAchieve=()=>{
     const[imageLink,setImage]=useState('');
     const addAchieveFunction=()=>{
         if((title!=='')&&(details!=='')&&(imageLink!=='')){
-            axios.post('http://localhost:3001/addachieve',{
+            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}addachieve`,{
                 title:title,
                 details:details,
                 image:imageLink 

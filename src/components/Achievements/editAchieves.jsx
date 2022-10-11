@@ -14,7 +14,7 @@ const EditAchieve=()=>{
     const params = useParams();
     const id=params.id;
     const getAchieve=()=>{
-        axios.get('http://localhost:3001/getachievebyid',{params:{id:id}}).then((res)=>{
+        axios.get(`${process.env.REACT_APP_ADMIN_PANEL_URL}getachievebyid`,{params:{id:id}}).then((res)=>{
             const datas=res.data.message[0]
             setTitle(datas.title);
             setDetails(datas.details);
@@ -27,7 +27,7 @@ const EditAchieve=()=>{
     useEffect(()=>getAchieve(),[]);
     const updateAchieve=()=>{
         if((title!=='')&&(details!=='')&&(imageLink!=='')){
-            axios.post('http://localhost:3001/editachieve',{
+            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}editachieve`,{
                 id:id,
                 title:title,
                 details:details,
