@@ -11,28 +11,29 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 const AddJobs=()=>{
     const history=useHistory();
-    const[position,setPosition]=useState(201);
+    const[position_id,setPosition_id]=useState(201);
+    const[job_title,setJobtitle]=useState([]);
     const[location,setLocation]=useState('');
     const[details,setDetail]=useState('');
     const[experience,setExperience]=useState('');
     const[expire,setExpire]=useState('');
-    // const getPositions=()=>{
-    //     axios.get('http://localhost:3001/getposition').then((res)=>{
-    //         console.log(res.data.message);
-    //         setPosition(res.data.message);
-    //     }).catch=(e)=>{ 
-    //         console.log('err',e);
-    //     }
-    // }
-    // useEffect(()=>getPositions(),[]);
+    const getPositions=()=>{
+        axios.get(`${process.env.REACT_APP_ADMIN_PANEL_URL}getposition`).then((res)=>{
+            console.log(res.data.message);
+            setJobtitle(res.data.message);
+        }).catch=(e)=>{ 
+            console.log('err',e);
+        }
+    }
+    useEffect(()=>getPositions(),[]);
         const handleChange = (event) => {
             console.log('selected',event.target.value);
-            setPosition(event.target.value);
+            setPosition_id(event.target.value);
           };
     const addJobFunction=()=>{
-        if((position!=='')&&(details!=='')&&(location!=='')){
-            axios.post('http://localhost:3001/addjobs',{
-               position_id:position,
+        if((position_id!=='')&&(details!=='')&&(location!=='')){
+            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}addjobs`,{
+               position_id:position_id,
                location:location,
                details:details,
                expire:expire,
@@ -58,20 +59,14 @@ const AddJobs=()=>{
                 justifyContent={'center'}>
                 <Sidebar/><FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">position</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
+                <Select labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={position}
+                    value={position_id}
                     label="position"
-                    onChange={handleChange}
-                >
-                    <MenuItem value={201}>Front End Developer</MenuItem>
-                    <MenuItem value={202}>Back End Developer</MenuItem>
-                    <MenuItem value={203}>Data Scientist</MenuItem>
-                    <MenuItem value={204}>Full Stack Developer</MenuItem>
-                    <MenuItem value={205}>Software Tester</MenuItem>
-                    <MenuItem value={206}>Hr Manager</MenuItem>
-                    <MenuItem value={207}>Legal adviser</MenuItem>
+                    onChange={handleChange}>
+                        {
+                            job_title.map((job,key)=>(<MenuItem key={key} value={job.id}>{job.position}</MenuItem>))
+                        }
                 </Select>
                 </FormControl>
                 <TextField margin="normal" type={'text'} variant={'outlined'} placeholder={'Location'} onChange={(e)=>setLocation(e.target.value)} ></TextField>

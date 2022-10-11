@@ -16,7 +16,7 @@ const EditJobs=()=>{
     const params = useParams();
     const id=params.id;
     const getJobs=()=>{
-        axios.get('http://localhost:3001/getjobssbyid',{params:{id:id}}).then((res)=>{
+        axios.get(`${process.env.REACT_APP_ADMIN_PANEL_URL}getjobssbyid`,{params:{id:id}}).then((res)=>{
             const datas=res.data.message[0]
             setPosition(datas.position);
             setDetails(datas.description);
@@ -30,7 +30,7 @@ const EditJobs=()=>{
     useEffect(()=>getJobs(),[]);
     const updateJobs=()=>{
         if((position!=='')&&(details!=='')&&(location!=='')){
-            axios.post('http://localhost:3001/editjobs',{
+            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}editjobs`,{
                 id:id,
                 description:details,
                 location:location,

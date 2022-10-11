@@ -12,7 +12,7 @@ const AddInsights=()=>{
     const[imageLink,setImage]=useState('');
     const addInsightsFunction=()=>{
         if((title!=='')&&(details!=='')&&(imageLink!=='')){
-            axios.post('http://localhost:3001/addInsights',{
+            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}addInsights`,{
                 title:title,
                 details:details,
                 image:imageLink 

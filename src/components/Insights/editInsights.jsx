@@ -14,7 +14,7 @@ const EditInsights=()=>{
     const params = useParams();
     const id=params.id;
     const getInsights=()=>{
-        axios.get('http://localhost:3001/getinsightsbyid',{params:{id:id}}).then((res)=>{
+        axios.get(`${process.env.REACT_APP_ADMIN_PANEL_URL}getinsightsbyid`,{params:{id:id}}).then((res)=>{
             const datas=res.data.message[0]
             setTitle(datas.title);
             setDetails(datas.details);
@@ -27,7 +27,7 @@ const EditInsights=()=>{
     useEffect(()=>getInsights(),[]);
     const updateInsights=()=>{
         if((title!=='')&&(details!=='')&&(imageLink!=='')){
-            axios.post('http://localhost:3001/editinsights',{
+            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}editinsights`,{
                 id:id,
                 title:title,
                 details:details,

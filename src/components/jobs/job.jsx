@@ -10,12 +10,25 @@ import 'react-toastify/dist/ReactToastify.css';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
+import * as React from 'react';
+import TablePagination from '@mui/material/TablePagination';
 
 const Jobs=()=>{
     const history =useHistory();
-    const [jobs,setJobs]=useState([])
+    const [jobs,setJobs]=useState([]);  
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
     const getJobs=()=>{
-        axios.get('http://localhost:3001/getjobs').then((res)=>{
+        axios.get(`${process.env.REACT_APP_ADMIN_PANEL_URL}getjobs`).then((res)=>{
             console.log(res.data.message);
             setJobs(res.data.message);
         }).catch=(e)=>{
@@ -31,14 +44,15 @@ const Jobs=()=>{
         history.push('/addjobs');
     }
     const deleteJobs=(id)=>{ 
-        // console.log('delete',id);
-        axios.delete('http://localhost:3001/deleteJobs',{params:{id:id}}).then((res)=>{
+        axios.delete(`${process.env.REACT_APP_ADMIN_PANEL_URL}deleteJobs`,{params:{id:id}}).then((res)=>{
             toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
             getJobs();
         }).catch=(e)=>{
              console.log(e);
         }
     }
+    
+    const heading=['Position','Location','Experience/Year','Details','Expire Date','Actions'];
    
     return(
         <div>   
@@ -54,16 +68,12 @@ const Jobs=()=>{
                             maxWidth:'900px'
                         }} aria-label="simple table">
                     <TableHead>
-                        <TableRow >
-                            <TableCell sx={{fontWeight:'bold',width:'200px'}}>Position </TableCell>
-                            <TableCell sx={{fontWeight:'bold',width:'200px'}} align="left">Location</TableCell>
-                            <TableCell sx={{fontWeight:'bold',width:'200px'}} align="left">Experience</TableCell>
-                            <TableCell sx={{fontWeight:'bold',width:'200px'}} align="left">Details</TableCell>
-                            <TableCell sx={{fontWeight:'bold',width:'200px'}} align="left">Expire Date</TableCell>
-                            <TableCell sx={{fontWeight:'bold',width:'200px'}} align="left">Actions</TableCell>
+                        <TableRow >{heading.map((head,key)=>(
+                                <TableCell sx={{fontWeight:'bold',width:'200px'}} align="left" key={key}>{head}</TableCell>
+                            ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody>{jobs.map((row,index) => (
+                    <TableBody>{jobs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,index) => (
                         <TableRow key={index}>
                                 <TableCell sx={{width:'150px'}} align="left">{row.position}</TableCell>
                                 <TableCell sx={{width:'150px'}} align="left">{row.location}</TableCell>
@@ -79,7 +89,16 @@ const Jobs=()=>{
                     </TableBody>
                 </Table>
             </TableContainer> 
-                                
+            <TablePagination
+                rowsPerPageOptions={[3, 5, 10]}
+                component="div"
+                count={jobs.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            /> 
+                  
         </Box>
     </div>
     );
