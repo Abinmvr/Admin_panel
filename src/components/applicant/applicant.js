@@ -8,7 +8,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import * as React from 'react';
 import TablePagination from '@mui/material/TablePagination';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { useHistory } from "react-router-dom";
 const Applicant=()=>{
+    const history =useHistory();
     const [applicant,setApplicant]=useState([]);  
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(3);
@@ -39,6 +43,10 @@ const Applicant=()=>{
              console.log(e);
         }
     }
+    const viewApplicant=(id)=>{
+        console.log('applicant',id);
+        history.push(`/viewapplicant/${id}`);
+    }
     const heading=['Position','Name','Experience','Email','Resume','Actions'];
     
     return(
@@ -67,8 +75,9 @@ const Applicant=()=>{
                                 <TableCell sx={{width:'150px'}} align="center">{row.experience}</TableCell>
                                 <TableCell sx={{width:'150px'}} align="left">{row.email}</TableCell>
                                 <TableCell sx={{width:'150px'}} align="left">{row.resume}</TableCell>
-                                <TableCell sx={{width:'150px'}}>
+                                <TableCell sx={{width:'200px'}}>
                                     <Button onClick={(e)=>deleteApplicant(row.id)} sx={{color:'red'}}><DeleteTwoToneIcon/></Button>
+                                    <Button onClick={(e)=>viewApplicant(row.id)} sx={{color:'black'}}><VisibilityOutlinedIcon/></Button>
                                 </TableCell>
                         </TableRow>
                     ))}

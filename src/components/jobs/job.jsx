@@ -43,6 +43,7 @@ const Jobs=()=>{
     const updateJobs=()=>{
         history.push('/addjobs');
     }
+    
     const deleteJobs=(id)=>{ 
         axios.delete(`${process.env.REACT_APP_ADMIN_PANEL_URL}deleteJobs`,{params:{id:id}}).then((res)=>{
             toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
