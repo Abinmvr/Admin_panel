@@ -37,7 +37,7 @@ const Applicant=()=>{
    
     const deleteApplicant=(id)=>{ 
         axios.delete(`${process.env.REACT_APP_ADMIN_PANEL_URL}deleteapplicant`,{params:{id:id}}).then((res)=>{
-            toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
+            toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER});
             getApplicant();
         }).catch=(e)=>{
              console.log(e);

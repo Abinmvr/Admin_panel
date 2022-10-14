@@ -1,3 +1,4 @@
+import './insight.css';
 import Sidebar from "../sidebar/sidebar";
 import axios from "axios";
 import {useState } from "react";
@@ -10,23 +11,34 @@ const AddInsights=()=>{
     const[title,setTitle]=useState('');
     const[details,setDetails]=useState('');
     const[imageLink,setImage]=useState('');
+    const[error,setError]=useState('');
     const addInsightsFunction=()=>{
+        const formData = new FormData();
         if((title!=='')&&(details!=='')&&(imageLink!=='')){
-            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}addInsights`,{
-                title:title,
-                details:details,
-                image:imageLink 
+            formData.append('title',title);
+            formData.append('details',details);
+            formData.append('image',imageLink );
+            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}addInsights`,formData,
+            {headers:{
+                'content-type':'multipart/form-data'
+            }
             }).then((res)=>{
                 const status = res.data.success;
                 if(status===true){
-                        toast.success('Add successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
+                        setError('');
+                        toast.success('Add successfully !',{position:toast.POSITION.TOP_CENTER});
                         history.push('/Insight');
+                }
+                else{
+                    setError(res.data.message)
                 }
             }).catch=(e)=>{
                     console.log(e);
             }
         }
     }
+    
+    const imageChange=(event)=>setImage(event.target.files[0]);
     return(
         <div>
             <Box display={'flex'}
@@ -38,7 +50,8 @@ const AddInsights=()=>{
                 <Sidebar/>  
                 <TextField margin="normal" type={'text'} variant={'outlined'} placeholder={'title'} onChange={(e)=>setTitle(e.target.value)} ></TextField>
                 <TextField margin="normal" type={'text'} variant={'outlined'} placeholder={'Description'} onChange={(e)=>setDetails(e.target.value)} ></TextField>
-                <TextField margin="normal" type={'text'} variant={'outlined'} placeholder={'Image Link'} onChange={(e)=>setImage(e.target.value)}></TextField>
+                <TextField margin="normal" type={'file'} variant={'outlined'} placeholder={'Image Link'} onChange={imageChange}></TextField>
+                <div className="error_div">{error}</div>
                 <Button  sx={{marginTop:2 }}variant="contained" color="success" onClick={addInsightsFunction}>Add</Button> 
             </Box>
         </div>

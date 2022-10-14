@@ -45,7 +45,7 @@ const Insights=()=>{
     const deleteInsights=(id)=>{
         axios.delete(`${process.env.REACT_APP_ADMIN_PANEL_URL}deleteinsights`,{params:{id:id}}).then((res)=>{
             console.log(res.data.message);
-            toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
+            toast.warn('Deleted successfully !',{position:toast.POSITION.TOP_CENTER});
             getInsight();
         }).catch=(e)=>{
         console.log(e);
@@ -76,7 +76,7 @@ const Insights=()=>{
                                     <TableCell align="left">{row.details}</TableCell>
                                     <TableCell align="left" sx={{width:'50' }}>
                                         <div className="imagediv">
-                                            <img src={row.image} alt={''} ></img>
+                                            <img src={`http://localhost:3001/${row.image}`} alt={row.image} ></img>
                                         </div>
                                     </TableCell> 
                                     <TableCell sx={{width:'200px'}}>

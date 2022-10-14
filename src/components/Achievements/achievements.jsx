@@ -40,12 +40,12 @@ const Achievement=()=>{
     const editAchieves=(id)=>{
         history.push(`/editachieve/${id}`);
     }
-    const updateAchieves=()=>{
+    const addAchieves=()=>{
         history.push(`/addachieve`);
     }
     const deleteAchieves=(id)=>{ 
         axios.delete(`${process.env.REACT_APP_ADMIN_PANEL_URL}deleteachieve`,{params:{id:id}}).then((res)=>{
-            toast.success('Deleted successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
+            toast.warn('Deleted successfully !',{position:toast.POSITION.TOP_CENTER});
             getAchieve();
         }).catch=(e)=>{
              console.log(e);
@@ -61,7 +61,7 @@ const Achievement=()=>{
         alignItems={'center'} 
         margin={'auto'}>  
             <Sidebar/>
-            <Button className='addbtn' onClick={updateAchieves} sx={{color:'green'}}>Add<AddCircleOutlineTwoToneIcon/></Button>
+            <Button className='addbtn' onClick={addAchieves} sx={{color:'green'}}>Add<AddCircleOutlineTwoToneIcon/></Button>
             <TableContainer component={Paper}>
                 <Table sx={{ marginLeft:'240px',maxWidth:'800px' }} aria-label="simple table">
                     <TableHead>
@@ -77,7 +77,7 @@ const Achievement=()=>{
                                 <TableCell align="left">{row.details}</TableCell>
                                 <TableCell align="left" sx={{width:'50' }}>
                                     <div className="imagediv">
-                                        <img src={row.image} alt={'achieve'} ></img>
+                                        <img src={`http://localhost:3001/${row.image}`} alt={row.image} ></img>
                                     </div>
                                 </TableCell>  
                                  <TableCell sx={{width:'200px'}}>
