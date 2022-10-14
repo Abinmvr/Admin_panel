@@ -11,6 +11,7 @@ const EditInsights=()=>{
     const[title,setTitle]=useState('');
     const[details,setDetails]=useState('');
     const[imageLink,setImage]=useState('');
+    const[error,setError]=useState('');
     const params = useParams();
     const id=params.id;
     const getInsights=()=>{
@@ -26,23 +27,32 @@ const EditInsights=()=>{
     }
     useEffect(()=>getInsights(),[]);
     const updateInsights=()=>{
-        if((title!=='')&&(details!=='')&&(imageLink!=='')){
-            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}editinsights`,{
-                id:id,
-                title:title,
-                details:details,
-                image:imageLink 
+        const formData = new FormData();
+        if((title!=='')&&(details!=='')){
+            formData.append('id',id);
+            formData.append('title',title);
+            formData.append('details',details);
+            formData.append('image',imageLink );
+            axios.post(`${process.env.REACT_APP_ADMIN_PANEL_URL}editinsights`,formData,
+            {headers:{
+                'content-type':'multipart/form-data'
+            }
             }).then((res)=>{
                 const status = res.data.success;
                 if(status===true){
-                        toast.success('Updated successfully !',{position:toast.POSITION.TOP_CENTER,autoClose:false});
+                        setError('');
+                        toast.success('Updated successfully !',{position:toast.POSITION.TOP_CENTER});
                         history.push('/insight');
+                }
+                else{
+                        setError(res.data.message)
                 }
             }).catch=(e)=>{
                  console.log(e);
             }
         }
     }
+    const imageChange=(event)=>setImage(event.target.files[0]);
 
     return(
         <div>
@@ -55,7 +65,8 @@ const EditInsights=()=>{
                 <Sidebar/>  
                 <TextField margin="normal" type={'text'} variant={'outlined'} value={title} onChange={(e)=>setTitle(e.target.value)}></TextField>
                 <TextField margin="normal" type={'text'} variant={'outlined'} value={details} onChange={(e)=>setDetails(e.target.value)}></TextField>
-                <TextField margin="normal" type={'text'} variant={'outlined'} value={imageLink} onChange={(e)=>setImage(e.target.value)}></TextField>
+                <TextField margin="normal" type={'file'} variant={'outlined'} onChange={imageChange}></TextField>
+                <div className="error_div">{error}</div>
                 <Button  sx={{marginTop:2 }}variant="contained" color="warning" onClick={updateInsights}>update</Button> 
             </Box>
         </div>

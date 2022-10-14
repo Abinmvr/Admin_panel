@@ -10,3 +10,6 @@
 .addbtn{
     float: right;
 }
+.error_div{
+    color: red;
+}
